@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d18">
+<title>Universal Headshot AI</title>
+<style>
+:root{--bg:#090d18;--panel:#121a2b;--panel2:#18233a;--line:#293752;--text:#f4f7ff;--muted:#9eabc4;--cyan:#42e6d0;--blue:#638cff;--gold:#ffc857;--red:#ff7888}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0%,#17264a 0,transparent 36%),var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:22px 15px 60px}.brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#07111e;font-weight:1000;font-size:22px}.brand h1{font-size:19px;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.hero{padding:22px;border:1px solid #2c4963;border-radius:22px;background:linear-gradient(135deg,#142a3b,#151d36);margin-bottom:16px}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:1.4px}.hero h2{font-size:26px;line-height:1.1;margin:9px 0}.hero p{color:#c0cbe0;margin:0;line-height:1.5}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}.card h3{margin:0 0 14px;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:12px;color:var(--muted)}input,select{width:100%;padding:12px;background:#0c1424;color:var(--text);border:1px solid #33425f;border-radius:11px;font:inherit;outline:none}input:focus,select:focus{border-color:var(--cyan)}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid #33425f;background:#0c1424;color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer}.choice.active{border-color:var(--cyan);background:#12343a;color:#bffff5}
+button{border:0;border-radius:12px;padding:13px 16px;font-weight:800;cursor:pointer;font:inherit}.primary{background:linear-gradient(90deg,var(--cyan),#78b7ff);color:#07111e;width:100%;font-weight:900}.secondary{background:#23314b;color:var(--text);border:1px solid #3b4b68}.danger{background:#3a202b;color:#ffb5bf;border:1px solid #70404d}.note{font-size:12px;line-height:1.5;color:var(--muted)}.results{display:none}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#0c1424;border:1px solid #293752;border-radius:13px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{font-size:27px;color:var(--cyan);font-variant-numeric:tabular-nums}.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:#173b3a;color:#a9fff1;font-size:11px;font-weight:800}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.profile-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.profile-actions button{flex:1}.feedback button{margin:4px 4px 4px 0}.history-item{border-top:1px solid var(--line);padding:11px 0;color:#c8d2e6;font-size:13px}.history-item:first-child{border-top:0}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#e8fff9;color:#07111e;padding:11px 16px;border-radius:12px;font-weight:800;display:none;z-index:5;max-width:90%;text-align:center}
+@media(max-width:480px){.grid{grid-template-columns:1fr 1fr}.hero h2{font-size:23px}.card{padding:15px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="brand"><div class="logo">HS</div><div><h1>Universal Headshot AI</h1><p>Device-aware Free Fire sensitivity coach</p></div></header>
+<section class="hero"><div class="eyebrow">TRAIN • MEASURE • IMPROVE</div><h2>Build a sensitivity profile that fits your phone.</h2><p>Enter your device and aiming problem. Generate a starting profile, test it in Training Ground, then keep or deliberately replace it.</p></section>
+
+<section class="card"><h3>01 · Your device</h3><div class="grid">
+<div class="field full"><label for="device">Phone name / model</label><input id="device" placeholder="e.g. Infinix SMART 10 (X6725)"></div>
+<div class="field"><label for="ram">RAM (GB)</label><input id="ram" type="number" min="1" max="24" value="3"></div>
+<div class="field"><label for="hz">Refresh rate (Hz)</label><select id="hz"><option>60</option><option>90</option><option>120</option><option>144</option><option>165</option><option>Unknown</option></select></div>
+<div class="field"><label for="graphics">Game graphics</label><select id="graphics"><option>Smooth</option><option>Standard</option><option>Ultra</option><option>Unknown</option></select></div>
+<div class="field"><label for="fps">High FPS setting</label><select id="fps"><option>On</option><option>Off</option><option>Unavailable</option></select></div>
+</div><p class="note">Device details are user-entered. A browser cannot reliably read your phone's true touch sampling rate or game performance, so this app does not pretend to detect them.</p></section>
+
+<section class="card"><h3>02 · Your aiming style</h3><div class="field"><label>How do you usually aim?</label><div class="choices" id="style"><button class="choice active" data-v="Mixed">Mixed range</button><button class="choice" data-v="Drag">Drag headshots</button><button class="choice" data-v="Tap">Tap fire</button></div></div><div class="field" style="margin-top:15px"><label>What happens most often?</label><div class="choices" id="problem"><button class="choice active" data-v="Shaky">Aim shakes</button><button class="choice" data-v="Chest">Stays on chest</button><button class="choice" data-v="Over">Goes over head</button><button class="choice" data-v="Slow">Drag feels slow</button><button class="choice" data-v="Inconsistent">Inconsistent</button></div></div></section>
+
+<button class="primary" id="generate">GENERATE STARTING PROFILE</button>
+<section class="card results" id="results"><div class="row"><h3 style="margin:0">Your sensitivity profile</h3><span class="tag" id="status">LOCKED PROFILE</span></div><p class="note" id="deviceSummary"></p><div class="stats" id="stats"></div><p class="note" id="reason"></p><div class="profile-actions"><button class="secondary" id="copy">Copy values</button><button class="secondary" id="unlock">Regenerate profile</button></div><p class="note">Locked means the values stay unchanged during testing. They only change if you press Regenerate and create a new profile.</p></section>
+
+<section class="card"><h3>03 · Training-ground check</h3><p class="note">Use the same weapon and distance for a short practice session. Record what happened; feedback does not secretly alter your locked numbers.</p><div class="feedback"><button class="choice" data-feedback="Mostly headshots">Mostly headshots</button><button class="choice" data-feedback="Mostly chest shots">Mostly chest shots</button><button class="choice" data-feedback="Aim overshoots">Aim overshoots</button><button class="choice" data-feedback="Aim shakes">Aim shakes</button><button class="choice" data-feedback="Not tested yet">Not tested yet</button></div><div class="row" style="margin-top:10px"><span class="note" id="feedbackText">No test recorded yet.</span><button class="secondary" id="saveTest">Save test</button></div></section>
+
+<section class="card"><div class="row"><h3 style="margin:0">Training history</h3><button class="danger" id="clearHistory">Clear</button></div><div id="history" class="note" style="margin-top:10px">No saved sessions yet.</div></section>
+<p class="note" style="text-align:center;margin-top:22px">This is a starting-point coach, not an official Garena tool. Sensitivity depends on personal control, HUD layout, game updates and device performance. No setting can guarantee headshots.</p>
+</main><div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+let aimStyle='Mixed',problem='Shaky',feedback='Not tested yet',profile=null;
+function chooseGroup(id,cb){$(id).addEventListener('click',e=>{const b=e.target.closest('button[data-v]');if(!b)return;$(id).querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));cb(b.dataset.v)})}
+chooseGroup('style',v=>aimStyle=v);chooseGroup('problem',v=>problem=v);
+document.querySelectorAll('[data-feedback]').forEach(b=>b.addEventListener('click',()=>{feedback=b.dataset.feedback;document.querySelectorAll('[data-feedback]').forEach(x=>x.classList.toggle('active',x===b));$('feedbackText').textContent='Selected: '+feedback}));
+function clamp(n){return Math.max(0,Math.min(200,Math.round(n)))}
+function generate(){
+ const device=$('device').value.trim()||'Unspecified device',ram=Math.max(1,Math.min(24,Number($('ram').value)||3)),hz=$('hz').value;
+ // Conservative starting values, not claims of measured or universally optimal settings.
+ let base=150;
+ if(ram<=3)base-=5;if(ram>=8)base+=3;if(hz==='60')base-=5;if(hz==='120'||hz==='144'||hz==='165')base+=3;
+ let g=base,r=base-8,s2=base-18,s4=base-30,sn=base-55,fl=base-20;
+ if(aimStyle==='Tap'){g-=12;r-=10;s2-=8;s4-=5}
+ if(aimStyle==='Drag'){g+=5;r+=3}
+ if(problem==='Shaky'){g-=14;r-=12;s2-=8;s4-=5}
+ if(problem==='Chest'){g+=8;r+=7}
+ if(problem==='Over'){g-=10;r-=8;s2-=5}
+ if(problem==='Slow'){g+=10;r+=6}
+ if(problem==='Inconsistent'){g-=5;r-=4}
+ if($('graphics').value==='Ultra'&&ram<=4){g-=3;r-=3}
+ profile={device,ram,hz,style:aimStyle,problem,values:{'General':clamp(g),'Red Dot':clamp(r),'2X Scope':clamp(s2),'4X Scope':clamp(s4),'Sniper Scope':clamp(sn),'Free Look':clamp(fl)},created:new Date().toLocaleString()};
+ renderProfile();localStorage.setItem('uha_profile',JSON.stringify(profile));toast('New profile generated and locked.');
+}
+function renderProfile(){if(!profile)return;$('results').style.display='block';$('deviceSummary').textContent=`${profile.device} · ${profile.ram} GB RAM · ${profile.hz} Hz · ${profile.style} aiming · Main issue: ${profile.problem}`;$('stats').innerHTML=Object.entries(profile.values).map(([k,v])=>`<div class="stat"><span>${k}</span><strong>${v}</strong></div>`).join('');$('reason').textContent='These are estimated starting values based on the details entered, not verified device measurements. Test them before deciding whether they suit your control.'}
+$('generate').onclick=()=>{if(!profile||confirm('Generate a new profile? This will replace your currently locked profile.'))generate()};
+$('unlock').onclick=()=>{if(confirm('Create a new profile using your current device and aiming answers?'))generate()};
+$('copy').onclick=()=>{if(!profile)return;let t=Object.entries(profile.values).map(([k,v])=>k+': '+v).join('\\n');if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>toast('Sensitivity values copied.')).catch(()=>toast(t));else toast(t)};
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2300)}
+function loadHistory(){let h=JSON.parse(localStorage.getItem('uha_history')||'[]');$('history').innerHTML=h.length?h.slice().reverse().map(x=>`<div class="history-item"><b>${x.date}</b><br>${x.feedback} · ${x.device}</div>`).join(''):'No saved sessions yet.'}
+$('saveTest').onclick=()=>{if(!profile){toast('Generate a profile first.');return}let h=JSON.parse(localStorage.getItem('uha_history')||'[]');h.push({date:new Date().toLocaleString(),feedback,device:profile.device});localStorage.setItem('uha_history',JSON.stringify(h));loadHistory();toast('Training result saved.')};
+$('clearHistory').onclick=()=>{if(confirm('Clear all saved training history?')){localStorage.removeItem('uha_history');loadHistory()}};
+try{let p=JSON.parse(localStorage.getItem('uha_profile')||'null');if(p){profile=p;$('device').value=p.device;$('ram').value=p.ram;$('hz').value=p.hz;aimStyle=p.style;problem=p.problem;document.querySelectorAll('#style button').forEach(b=>b.classList.toggle('active',b.dataset.v===aimStyle));document.querySelectorAll('#problem button').forEach(b=>b.classList.toggle('active',b.dataset.v===problem));renderProfile()}}catch(e){}
+loadHistory();
+</script></body></html>
